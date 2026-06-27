@@ -25,9 +25,7 @@ export default defineSchema({
     userId: v.id("appUsers"),
     createdAt: v.number(),
     expiresAt: v.number(),
-  })
-    .index("by_token", ["token"])
-    .index("by_user", ["userId"]),
+  }).index("by_token", ["token"]),
 
   // Short-lived email sign-in codes (hashed, never stored in plaintext).
   emailCodes: defineTable({

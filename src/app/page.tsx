@@ -42,7 +42,7 @@ export default function Home() {
               Download for macOS
             </DownloadLink>
             <div className="meta">
-              <strong>Free</strong> · macOS 14 or later · Apple notarized · 2.4&nbsp;MB
+              <strong>Free</strong> · macOS 14 or later · Apple notarized · 2.6&nbsp;MB
             </div>
             <div className="gk-note">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">

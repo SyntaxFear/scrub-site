@@ -54,9 +54,12 @@ http.route({
         audience: APPLE_BUNDLE_ID,
       });
       const sub = payload.sub as string;
-      // Apple verifies the emails it returns; reject if it ever says otherwise.
+      // When Apple returns an email it must be verified (Apple sends the claim as
+      // boolean true or the string "true"); reject if it's present but unverified
+      // or, defensively, if the claim is missing while an email is set.
       const appleVerified = payload.email_verified;
-      if (payload.email && appleVerified !== undefined && appleVerified !== true && appleVerified !== "true") {
+      const appleEmailOk = appleVerified === true || appleVerified === "true";
+      if (payload.email && !appleEmailOk) {
         return json({ error: "Apple email is not verified" }, 401);
       }
       // Apple only returns the email on the first authorization; fall back to a
