@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ConvexClientProvider } from "./ConvexClientProvider";
+import { PostHogProvider } from "./PostHogProvider";
 import "./globals.css";
 
 const SITE_URL = "https://scrub-site-three.vercel.app";
@@ -32,7 +33,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConvexClientProvider>{children}</ConvexClientProvider>
+        <ConvexClientProvider>
+          <PostHogProvider>{children}</PostHogProvider>
+        </ConvexClientProvider>
       </body>
     </html>
   );

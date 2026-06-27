@@ -1,6 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
 import { AuthButton } from "@/components/AuthButton";
+import { DownloadLink } from "@/components/DownloadLink";
 
 export default function Home() {
   return (
@@ -14,9 +15,9 @@ export default function Home() {
           </a>
           <div className="nav-actions">
             <AuthButton />
-            <a className="nav-cta" href="/Scrub.dmg" download>
+            <DownloadLink className="nav-cta" source="nav">
               Download
-            </a>
+            </DownloadLink>
           </div>
         </div>
       </nav>
@@ -36,12 +37,12 @@ export default function Home() {
           </p>
 
           <div className="cta-row">
-            <a className="download" href="/Scrub.dmg" download>
+            <DownloadLink className="download" source="hero">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
               </svg>
               Download for macOS
-            </a>
+            </DownloadLink>
             <div className="meta">
               <strong>Free</strong> · macOS 14 or later · Apple notarized · 2.4&nbsp;MB
             </div>
@@ -226,12 +227,12 @@ export default function Home() {
           <h2>Clean up your Mac, properly.</h2>
           <p>Free. Private. Notarized by Apple. macOS 14 or later.</p>
           <div className="cta-row">
-            <a className="download" href="/Scrub.dmg" download>
+            <DownloadLink className="download" source="final">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14" />
               </svg>
               Download for macOS
-            </a>
+            </DownloadLink>
             <div className="gk-note">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" />
