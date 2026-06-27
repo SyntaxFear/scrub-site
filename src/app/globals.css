@@ -68,6 +68,27 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,80,40,0.30); }
 
+/* ---------- sign-in menu ---------- */
+.signin-wrap { position: relative; display: inline-flex; }
+.signin-backdrop { position: fixed; inset: 0; z-index: 60; }
+.signin-menu {
+  position: absolute; top: calc(100% + 10px); right: 0; z-index: 61;
+  display: flex; flex-direction: column; gap: 6px;
+  background: var(--card-2); border: 1px solid var(--line-strong);
+  border-radius: 14px; padding: 8px; min-width: 220px;
+  box-shadow: 0 18px 50px rgba(0,0,0,0.55);
+}
+.signin-option {
+  display: flex; align-items: center; gap: 10px;
+  width: 100%; text-align: left;
+  font-size: 14px; font-weight: 540; color: var(--text);
+  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
+  border-radius: 10px; padding: 10px 12px; cursor: pointer;
+  font-family: inherit; transition: background .15s ease, border-color .15s ease;
+}
+.signin-option:hover { background: rgba(255,255,255,0.07); border-color: var(--line-strong); }
+.signin-option svg { width: 18px; height: 18px; flex-shrink: 0; }
+
 /* ---------- hero ---------- */
 header.hero { position: relative; z-index: 1; text-align: center; padding: 96px 0 64px; }
 .hero-icon {
