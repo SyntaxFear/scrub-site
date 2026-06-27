@@ -1,8 +1,6 @@
 /* eslint-disable @next/next/no-img-element */
 
-import { AuthButton } from "@/components/AuthButton";
 import { DownloadLink } from "@/components/DownloadLink";
-import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 export default function Home() {
   return (
@@ -15,7 +13,6 @@ export default function Home() {
             <img src="/assets/icon-256.png" alt="Scrub icon" /> Scrub
           </a>
           <div className="nav-actions">
-            <AuthButton />
             <DownloadLink className="nav-cta" source="nav">
               Download
             </DownloadLink>
@@ -66,14 +63,14 @@ export default function Home() {
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <path d="M12 2l8 4v6c0 5-3.5 8-8 10-4.5-2-8-5-8-10V6l8-4z" />
               </svg>{" "}
-              100% on your Mac
+              Scans on your Mac
             </span>
             <span className="pill">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
                 <circle cx="12" cy="12" r="9" />
                 <path d="M12 7v5l3 2" />
               </svg>{" "}
-              No tracking, no account
+              Never sees what you delete
             </span>
           </div>
         </div>
@@ -184,26 +181,11 @@ export default function Home() {
         </div>
       </section>
 
-      <section className="section news-section">
-        <div className="wrap">
-          <div className="news-card">
-            <div className="eyebrow">Stay in the loop</div>
-            <h2>Get new versions first.</h2>
-            <p>
-              One email when Scrub ships an update — release notes only, no spam.
-              We still never see what you delete; the only thing that leaves your
-              Mac is the email you choose to give us.
-            </p>
-            <NewsletterSignup source="landing" />
-          </div>
-        </div>
-      </section>
-
       <section className="strip section">
         <div className="wrap">
           <div className="section-head">
             <div className="eyebrow">Private by design</div>
-            <h2>Your Mac, and nothing leaves it.</h2>
+            <h2>What you delete stays yours.</h2>
           </div>
           <div className="grid2">
             <div className="note-card">
@@ -213,10 +195,11 @@ export default function Home() {
                   <path d="M8 11V7a4 4 0 018 0v4" />
                 </svg>
               </div>
-              <h3>Everything stays local</h3>
+              <h3>Cleanup happens on your Mac</h3>
               <p>
-                Scrub scans your disk entirely on-device. There’s no account, no analytics,
-                and no network calls — nothing about your Mac is ever sent anywhere.
+                Scrub scans your disk and removes files entirely on your device. You sign
+                in to set it up and it checks for updates online, but the one thing it
+                never reads or uploads is what you choose to delete.
               </p>
             </div>
             <div className="note-card">

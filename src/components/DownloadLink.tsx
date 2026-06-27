@@ -2,11 +2,9 @@
 
 import { ReactNode } from "react";
 import posthog from "posthog-js";
-import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
 
-// The DMG download link, instrumented for the key "download" metric:
-// fires a PostHog `download_clicked` event and increments the Convex counter.
+// The DMG download link, instrumented for the key "download" metric via a PostHog
+// `download_clicked` event.
 export function DownloadLink({
   className,
   source,
@@ -16,7 +14,6 @@ export function DownloadLink({
   source: string;
   children: ReactNode;
 }) {
-  const record = useMutation(api.downloads.record);
   return (
     <a
       className={className}
@@ -24,7 +21,6 @@ export function DownloadLink({
       download
       onClick={() => {
         posthog.capture("download_clicked", { source });
-        void record({ source });
       }}
     >
       {children}

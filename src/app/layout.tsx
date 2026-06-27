@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import { ConvexClientProvider } from "./ConvexClientProvider";
 import { PostHogProvider } from "./PostHogProvider";
 import "./globals.css";
 
@@ -36,9 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body>
-        <ConvexClientProvider>
-          <PostHogProvider>{children}</PostHogProvider>
-        </ConvexClientProvider>
+        <PostHogProvider>{children}</PostHogProvider>
       </body>
     </html>
   );

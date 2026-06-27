@@ -8,14 +8,10 @@
  * @module
  */
 
-import type * as auth from "../auth.js";
-import type * as broadcast from "../broadcast.js";
-import type * as downloads from "../downloads.js";
 import type * as email from "../email.js";
 import type * as emailTemplates from "../emailTemplates.js";
 import type * as http from "../http.js";
-import type * as profiles from "../profiles.js";
-import type * as subscribers from "../subscribers.js";
+import type * as nativeAuth from "../nativeAuth.js";
 
 import type {
   ApiFromModules,
@@ -24,14 +20,10 @@ import type {
 } from "convex/server";
 
 declare const fullApi: ApiFromModules<{
-  auth: typeof auth;
-  broadcast: typeof broadcast;
-  downloads: typeof downloads;
   email: typeof email;
   emailTemplates: typeof emailTemplates;
   http: typeof http;
-  profiles: typeof profiles;
-  subscribers: typeof subscribers;
+  nativeAuth: typeof nativeAuth;
 }>;
 
 /**

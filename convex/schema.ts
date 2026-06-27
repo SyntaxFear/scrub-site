@@ -1,47 +1,40 @@
 import { defineSchema, defineTable } from "convex/server";
-import { authTables } from "@convex-dev/auth/server";
 import { v } from "convex/values";
 
+// Custom auth for the native macOS app. Sign-in tokens (Apple/Google identity
+// tokens, email codes) are verified server-side; the app holds only an opaque
+// session token. No web/browser auth — the website is download-only.
 export default defineSchema({
-  // Convex Auth's built-in tables (users, authSessions, authAccounts, ...).
-  ...authTables,
-
-  // Per-user marketing/update consent. Signing in is NOT consent to be emailed;
-  // `updatesOptIn` is the explicit opt-in for product-update broadcasts.
-  profiles: defineTable({
-    userId: v.id("users"),
-    updatesOptIn: v.boolean(),
-    optInAt: v.optional(v.number()),
-  }).index("by_user", ["userId"]),
-
-  // Append-only download events -> powers the public "X downloads" number.
-  downloads: defineTable({
-    at: v.number(),
-    source: v.optional(v.string()),
-  }),
-
-  // Newsletter subscribers (the "notify me about updates" box — no account needed).
-  // Double opt-in: created as "pending" with a token; "confirmed" only after the
-  // user clicks the email link. Only confirmed addresses ever get broadcasts.
-  subscribers: defineTable({
+  // One row per signed-in person, keyed by provider subject or email.
+  appUsers: defineTable({
     email: v.string(),
-    status: v.union(
-      v.literal("pending"),
-      v.literal("confirmed"),
-      v.literal("unsubscribed"),
-    ),
-    token: v.string(),
-    source: v.optional(v.string()),
+    name: v.optional(v.string()),
+    image: v.optional(v.string()),
+    appleSub: v.optional(v.string()),
+    googleSub: v.optional(v.string()),
     createdAt: v.number(),
-    confirmedAt: v.optional(v.number()),
+    lastSeenAt: v.number(),
   })
     .index("by_email", ["email"])
-    .index("by_token", ["token"]),
+    .index("by_appleSub", ["appleSub"])
+    .index("by_googleSub", ["googleSub"]),
 
-  // Addresses that bounced or complained — never email these again.
-  emailSuppressions: defineTable({
+  // Opaque session tokens issued to the app and stored in its Keychain.
+  appSessions: defineTable({
+    token: v.string(),
+    userId: v.id("appUsers"),
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index("by_token", ["token"])
+    .index("by_user", ["userId"]),
+
+  // Short-lived email sign-in codes (hashed, never stored in plaintext).
+  emailCodes: defineTable({
     email: v.string(),
-    reason: v.string(),
-    at: v.number(),
+    codeHash: v.string(),
+    expiresAt: v.number(),
+    attempts: v.number(),
+    createdAt: v.number(),
   }).index("by_email", ["email"]),
 });

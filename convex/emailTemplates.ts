@@ -1,4 +1,4 @@
-// Branded HTML email templates (plain functions, importable from mutations/actions).
+// Branded HTML email templates (plain functions, importable from actions).
 const SITE = "https://scrubmac.app";
 
 function layout(title: string, bodyHtml: string, footer: string) {
@@ -16,32 +16,17 @@ function layout(title: string, bodyHtml: string, footer: string) {
   </div></body></html>`;
 }
 
-function button(href: string, label: string) {
-  return `<a href="${href}" style="display:inline-block;background:linear-gradient(135deg,#FF9F0A,#FF3B30);color:#fff;text-decoration:none;font-weight:600;padding:13px 26px;border-radius:980px">${label}</a>`;
-}
-
-export function confirmEmail(confirmUrl: string) {
+/// The email sign-in code for the macOS app.
+export function authCodeEmail(code: string) {
   return {
-    subject: "Confirm your Scrub updates subscription",
+    subject: `${code} is your Scrub sign-in code`,
     html: layout(
-      "Confirm your subscription",
-      `<p style="color:#a1a1a8;line-height:1.6;margin:0 0 22px">Tap below to confirm you'd like an email when Scrub ships a new version — release notes only, no spam. The app still never sees what you delete.</p>
-       <p style="margin:0">${button(confirmUrl, "Confirm subscription")}</p>
-       <p style="color:#6e6e76;font-size:13px;margin:18px 0 0">If you didn't request this, just ignore this email.</p>`,
+      "Your sign-in code",
+      `<p style="color:#a1a1a8;line-height:1.6;margin:0 0 18px">Enter this code in Scrub to finish signing in. It expires in 10 minutes.</p>
+       <div style="font-size:34px;font-weight:700;letter-spacing:10px;text-align:center;margin:6px 0 18px;color:#fff">${code}</div>
+       <p style="color:#6e6e76;font-size:13px;margin:0">If you didn't request this, you can safely ignore this email.</p>`,
       `Scrub for macOS · scrubmac.app`,
     ),
-    text: `Confirm your Scrub updates subscription: ${confirmUrl}`,
+    text: `Your Scrub sign-in code is ${code}. It expires in 10 minutes.`,
   };
-}
-
-export function updateEmail(opts: {
-  title: string;
-  bodyHtml: string;
-  unsubscribeUrl: string;
-}) {
-  return layout(
-    opts.title,
-    opts.bodyHtml,
-    `You're getting this because you subscribed to Scrub updates. <a href="${opts.unsubscribeUrl}" style="color:#8a8a93">Unsubscribe</a>`,
-  );
 }
