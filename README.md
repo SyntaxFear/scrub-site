@@ -5,20 +5,24 @@ an app and all of its leftovers (caches, containers, preferences, launch agents,
 system helpers), finds orphaned leftovers from already-deleted apps, and shows each
 app's true disk footprint.
 
-Single static page — no build step. Plain `index.html` + `assets/`.
+**Next.js 16** (App Router) on Vercel. The site is download-only — sign-in happens
+in the macOS app, not here. It also hosts the Convex backend that powers the app's
+native auth, and the Sparkle `appcast.xml` + DMG for auto-updates.
 
 ## Contents
-- `index.html` — the landing page (inline CSS, no dependencies).
-- `assets/` — app icon (various sizes) and product screenshots.
-- `Scrub.dmg` — the downloadable app: **signed with Developer ID, notarized by Apple, and stapled**.
-- `vercel.json` — sets the DMG download headers and asset caching.
+- `src/app/` — the landing page (`page.tsx`), layout, and global CSS.
+- `src/components/DownloadLink.tsx` — the DMG download link (PostHog `download_clicked`).
+- `src/app/PostHogProvider.tsx` — website analytics via a first-party `/ingest` proxy.
+- `convex/` — the native-auth backend (Apple/Google/email), deployed separately.
+- `public/` — `Scrub.dmg` (Developer ID signed, notarized, stapled), `assets/`,
+  and (once a signed release is published) `appcast.xml`.
+- `vercel.json` — DMG download headers and asset caching.
 
-## Deploy (Vercel)
-No framework, no build command. Import this repo into Vercel and deploy as a static
-site (Framework Preset: **Other**, Build Command: *none*, Output Directory: `.`),
-or run `vercel` from this directory.
+## Deploy
+- Site: `vercel --prod` (Framework Preset: **Next.js**).
+- Backend: `npx convex deploy` (prod deployment `healthy-shepherd-34`).
 
 ## Updating the download
-Replace `Scrub.dmg` with a freshly notarized build (see the app repo's
-`scripts/release.sh`) and redeploy. Keep the filename `Scrub.dmg` so the download
-links stay valid.
+`scripts/release.sh` in the app repo builds + notarizes the DMG and (once Sparkle
+is set up) drops `Scrub.dmg` + `appcast.xml` into `public/`. Redeploy to publish.
+Keep the filename `Scrub.dmg` so the download links stay valid.

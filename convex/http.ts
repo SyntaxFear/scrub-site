@@ -54,12 +54,17 @@ http.route({
         audience: APPLE_BUNDLE_ID,
       });
       const sub = payload.sub as string;
+      // Apple verifies the emails it returns; reject if it ever says otherwise.
+      const appleVerified = payload.email_verified;
+      if (payload.email && appleVerified !== undefined && appleVerified !== true && appleVerified !== "true") {
+        return json({ error: "Apple email is not verified" }, 401);
+      }
       // Apple only returns the email on the first authorization; fall back to a
       // stable per-user placeholder keyed by the (verified) subject.
       const email = (payload.email as string | undefined) ?? `${sub}@appleid.scrubmac.app`;
       const result = await ctx.runMutation(internal.nativeAuth.signIn, {
         email,
-        name: typeof name === "string" ? name : undefined,
+        name: typeof name === "string" ? name.slice(0, 100) : undefined,
         appleSub: sub,
       });
       return json(result);
@@ -85,9 +90,14 @@ http.route({
       });
       const email = payload.email as string | undefined;
       if (!email) return json({ error: "No email in Google token" }, 400);
+      // Only trust (and link by) a Google-verified email — an unverified one
+      // could be attacker-controlled and used to take over an existing account.
+      if (payload.email_verified !== true) {
+        return json({ error: "Google email is not verified" }, 401);
+      }
       const result = await ctx.runMutation(internal.nativeAuth.signIn, {
         email,
-        name: payload.name as string | undefined,
+        name: (payload.name as string | undefined)?.slice(0, 100),
         image: payload.picture as string | undefined,
         googleSub: payload.sub as string,
       });
@@ -108,12 +118,17 @@ http.route({
       return json({ error: "Enter a valid email address" }, 400);
     }
     const code = genCode();
-    await ctx.runMutation(internal.nativeAuth.storeEmailCode, {
+    const stored = await ctx.runMutation(internal.nativeAuth.storeEmailCode, {
       email,
       codeHash: await sha256hex(code),
     });
+    if (!stored) {
+      return json({ error: "Please wait a moment before requesting another code." }, 429);
+    }
     const tpl = authCodeEmail(code);
-    await ctx.runAction(internal.email.send, {
+    // Send in the background: the request returns promptly, a flaky/rejected SES
+    // delivery can't turn into a 5xx, and we don't leak which addresses exist.
+    await ctx.scheduler.runAfter(0, internal.email.send, {
       to: email.trim().toLowerCase(),
       subject: tpl.subject,
       html: tpl.html,

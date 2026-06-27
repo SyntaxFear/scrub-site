@@ -58,8 +58,6 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
 .brand { display: flex; align-items: center; gap: 11px; font-weight: 600; font-size: 17px; letter-spacing: -0.01em; }
 .brand img { width: 28px; height: 28px; border-radius: 7px; }
 .nav-actions { display: flex; align-items: center; gap: 18px; }
-.nav-link { font-size: 14px; color: var(--muted); transition: color .15s ease; background: none; border: none; cursor: pointer; font-family: inherit; }
-.nav-link:hover { color: var(--text); }
 .nav-cta {
   font-size: 14px; font-weight: 590;
   padding: 8px 16px; border-radius: 980px;
@@ -67,27 +65,6 @@ nav .wrap { display: flex; align-items: center; justify-content: space-between; 
   transition: transform .15s ease, box-shadow .15s ease;
 }
 .nav-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(255,80,40,0.30); }
-
-/* ---------- sign-in menu ---------- */
-.signin-wrap { position: relative; display: inline-flex; }
-.signin-backdrop { position: fixed; inset: 0; z-index: 60; }
-.signin-menu {
-  position: absolute; top: calc(100% + 10px); right: 0; z-index: 61;
-  display: flex; flex-direction: column; gap: 6px;
-  background: var(--card-2); border: 1px solid var(--line-strong);
-  border-radius: 14px; padding: 8px; min-width: 220px;
-  box-shadow: 0 18px 50px rgba(0,0,0,0.55);
-}
-.signin-option {
-  display: flex; align-items: center; gap: 10px;
-  width: 100%; text-align: left;
-  font-size: 14px; font-weight: 540; color: var(--text);
-  background: rgba(255,255,255,0.03); border: 1px solid var(--line);
-  border-radius: 10px; padding: 10px 12px; cursor: pointer;
-  font-family: inherit; transition: background .15s ease, border-color .15s ease;
-}
-.signin-option:hover { background: rgba(255,255,255,0.07); border-color: var(--line-strong); }
-.signin-option svg { width: 18px; height: 18px; flex-shrink: 0; }
 
 /* ---------- hero ---------- */
 header.hero { position: relative; z-index: 1; text-align: center; padding: 96px 0 64px; }
@@ -221,53 +198,6 @@ footer .wrap { display: flex; align-items: center; justify-content: space-betwee
 .foot-brand { display: flex; align-items: center; gap: 10px; color: var(--muted); font-size: 14px; }
 .foot-brand img { width: 22px; height: 22px; border-radius: 6px; }
 footer .copy { color: var(--faint); font-size: 13px; }
-
-/* ---------- newsletter signup ---------- */
-.news-section { position: relative; z-index: 1; }
-.news-card {
-  max-width: 620px; margin: 0 auto; text-align: center;
-  background: linear-gradient(180deg, var(--card) 0%, var(--bg-2) 100%);
-  border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 44px 36px;
-}
-.news-card .eyebrow { margin-bottom: 14px; }
-.news-card p { color: var(--muted); font-size: 16px; line-height: 1.6; margin: 14px auto 26px; max-width: 480px; }
-.news-form { max-width: 440px; margin: 0 auto; }
-.news-row { display: flex; gap: 10px; }
-.news-input {
-  flex: 1; min-width: 0;
-  background: rgba(255,255,255,0.04); border: 1px solid var(--line-strong);
-  border-radius: 980px; padding: 13px 18px; color: var(--text);
-  font-size: 15px; font-family: inherit; outline: none;
-  transition: border-color .15s ease;
-}
-.news-input::placeholder { color: var(--faint); }
-.news-input:focus { border-color: var(--orange); }
-.news-btn {
-  background: var(--grad); color: #fff; border: none; cursor: pointer;
-  font-size: 15px; font-weight: 600; font-family: inherit;
-  padding: 13px 22px; border-radius: 980px; white-space: nowrap;
-  transition: transform .15s ease, box-shadow .15s ease;
-}
-.news-btn:hover { transform: translateY(-1px); box-shadow: 0 10px 28px rgba(255,80,40,0.3); }
-.news-btn:disabled { opacity: .6; cursor: default; transform: none; box-shadow: none; }
-.news-error { color: #ff6a5a; font-size: 13px; margin-top: 12px; }
-.news-done { color: var(--text); font-size: 16px; font-weight: 540; max-width: 440px; margin: 0 auto; line-height: 1.55; }
-
-/* ---------- status pages (confirm / unsubscribe) ---------- */
-.status-page {
-  position: relative; z-index: 1; min-height: 80vh;
-  display: flex; flex-direction: column; align-items: center; justify-content: center;
-  text-align: center; padding: 80px 24px; max-width: 520px; margin: 0 auto;
-}
-.status-icon { width: 84px; height: 84px; border-radius: 20px; margin-bottom: 24px; box-shadow: 0 18px 50px rgba(255,59,48,0.26); }
-.status-page h1 { font-size: clamp(28px, 5vw, 40px); letter-spacing: -0.03em; }
-.status-page p { color: var(--muted); font-size: 17px; line-height: 1.6; margin: 16px 0 28px; }
-.status-link { color: var(--orange); font-size: 15px; font-weight: 540; }
-
-@media (max-width: 760px) {
-  .news-row { flex-direction: column; }
-}
 
 @media (max-width: 760px) {
   header.hero { padding: 64px 0 44px; }

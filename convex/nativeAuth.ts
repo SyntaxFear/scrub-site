@@ -4,6 +4,7 @@ import { Doc, Id } from "./_generated/dataModel";
 
 const SESSION_TTL_MS = 90 * 24 * 60 * 60 * 1000; // 90 days
 const CODE_TTL_MS = 10 * 60 * 1000; // 10 minutes
+const CODE_COOLDOWN_MS = 30 * 1000; // min gap between code requests for one email
 const MAX_CODE_ATTEMPTS = 5;
 
 /// A long, opaque, unguessable session token.
@@ -113,16 +114,21 @@ export const signOut = internalMutation({
   },
 });
 
-/// Replace any pending code for this email with a new hashed one.
+/// Replace any pending code for this email with a new hashed one. Rate-limited:
+/// returns false (and changes nothing) if a code was issued in the last cooldown
+/// window, so the endpoint can't be used to bomb an address or burn SES quota.
 export const storeEmailCode = internalMutation({
   args: { email: v.string(), codeHash: v.string() },
-  handler: async (ctx, { email, codeHash }) => {
+  handler: async (ctx, { email, codeHash }): Promise<boolean> => {
     const e = email.trim().toLowerCase();
     const now = Date.now();
     const existing = await ctx.db
       .query("emailCodes")
       .withIndex("by_email", (q) => q.eq("email", e))
       .collect();
+    if (existing.some((c) => now - c.createdAt < CODE_COOLDOWN_MS)) {
+      return false;
+    }
     for (const old of existing) await ctx.db.delete(old._id);
     await ctx.db.insert("emailCodes", {
       email: e,
@@ -131,6 +137,22 @@ export const storeEmailCode = internalMutation({
       attempts: 0,
       createdAt: now,
     });
+    return true;
+  },
+});
+
+/// Daily cleanup (see crons.ts): drop expired sessions and codes so the tables
+/// don't grow without bound and stale tokens never linger.
+export const purgeExpired = internalMutation({
+  args: {},
+  handler: async (ctx) => {
+    const now = Date.now();
+    for (const s of await ctx.db.query("appSessions").collect()) {
+      if (s.expiresAt < now) await ctx.db.delete(s._id);
+    }
+    for (const c of await ctx.db.query("emailCodes").collect()) {
+      if (c.expiresAt < now) await ctx.db.delete(c._id);
+    }
   },
 });
 
