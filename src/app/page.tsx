@@ -1,5 +1,7 @@
 /* eslint-disable @next/next/no-img-element */
 
+import { AuthButton } from "@/components/AuthButton";
+
 export default function Home() {
   return (
     <>
@@ -10,9 +12,12 @@ export default function Home() {
           <a className="brand" href="#top">
             <img src="/assets/icon-256.png" alt="Scrub icon" /> Scrub
           </a>
-          <a className="nav-cta" href="/Scrub.dmg" download>
-            Download
-          </a>
+          <div className="nav-actions">
+            <AuthButton />
+            <a className="nav-cta" href="/Scrub.dmg" download>
+              Download
+            </a>
+          </div>
         </div>
       </nav>
 
