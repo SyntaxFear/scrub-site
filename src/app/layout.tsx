@@ -1,16 +1,19 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { ConvexClientProvider } from "./ConvexClientProvider";
 import { PostHogProvider } from "./PostHogProvider";
 import "./globals.css";
 
-const SITE_URL = "https://scrub-site-three.vercel.app";
+const SITE_URL = "https://scrubmac.app";
+
+export const viewport: Viewport = {
+  themeColor: "#0a0a0b",
+};
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   title: "Scrub — Uninstall Mac apps completely",
   description:
     "Scrub is a native macOS app uninstaller that removes an app and all its leftovers — caches, containers, preferences, launch agents and more. Free, private, and notarized by Apple.",
-  themeColor: "#0a0a0b",
   icons: {
     icon: "/assets/favicon-64.png",
     apple: "/assets/icon-180.png",
