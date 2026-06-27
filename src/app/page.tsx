@@ -2,6 +2,7 @@
 
 import { AuthButton } from "@/components/AuthButton";
 import { DownloadLink } from "@/components/DownloadLink";
+import { NewsletterSignup } from "@/components/NewsletterSignup";
 
 export default function Home() {
   return (
@@ -179,6 +180,21 @@ export default function Home() {
                 and removes its login items, launch agents and daemons.
               </p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      <section className="section news-section">
+        <div className="wrap">
+          <div className="news-card">
+            <div className="eyebrow">Stay in the loop</div>
+            <h2>Get new versions first.</h2>
+            <p>
+              One email when Scrub ships an update — release notes only, no spam.
+              We still never see what you delete; the only thing that leaves your
+              Mac is the email you choose to give us.
+            </p>
+            <NewsletterSignup source="landing" />
           </div>
         </div>
       </section>

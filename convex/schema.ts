@@ -20,6 +20,24 @@ export default defineSchema({
     source: v.optional(v.string()),
   }),
 
+  // Newsletter subscribers (the "notify me about updates" box — no account needed).
+  // Double opt-in: created as "pending" with a token; "confirmed" only after the
+  // user clicks the email link. Only confirmed addresses ever get broadcasts.
+  subscribers: defineTable({
+    email: v.string(),
+    status: v.union(
+      v.literal("pending"),
+      v.literal("confirmed"),
+      v.literal("unsubscribed"),
+    ),
+    token: v.string(),
+    source: v.optional(v.string()),
+    createdAt: v.number(),
+    confirmedAt: v.optional(v.number()),
+  })
+    .index("by_email", ["email"])
+    .index("by_token", ["token"]),
+
   // Addresses that bounced or complained — never email these again.
   emailSuppressions: defineTable({
     email: v.string(),
