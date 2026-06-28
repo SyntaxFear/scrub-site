@@ -21,7 +21,6 @@ const releaseManifest = manifest as ReleaseManifest;
 
 export const releases = releaseManifest.releases;
 export const latestRelease = releases[0];
-export const visibleReleases = releases.slice(0, 5);
 
 export function formatReleaseDate(date: string) {
   return new Intl.DateTimeFormat("en", {
@@ -35,8 +34,4 @@ export function formatReleaseDate(date: string) {
 export function formatBytes(bytes: number) {
   const mb = bytes / 1_000_000;
   return `${mb.toFixed(mb >= 10 ? 0 : 1)} MB`;
-}
-
-export function downloadPathForRelease(release: ReleaseEntry, index: number) {
-  return index === 0 ? release.latestPath : release.archivePath;
 }

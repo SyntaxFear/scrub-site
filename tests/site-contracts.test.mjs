@@ -85,6 +85,7 @@ test("download metadata matches the shipped DMG", async () => {
   assert.match(page, /fileSize:\s*formatBytes\(latestRelease\.fileSize\)/);
   assert.match(page, /href="\/llms\.txt"/);
   assert.match(page, /href="\/releases"/);
+  assert.doesNotMatch(page, /View previous versions/);
   assert.match(page, /mainEntity:\s*faqs\.map/);
   assert.equal((page.match(/unoptimized/g) ?? []).length, 3);
 });
@@ -118,18 +119,18 @@ test("crawler, social, legal, and LLM routes are present", async () => {
   assert.match(terms, /twitter:/);
 });
 
-test("release page is capped to five releases and validates previous archives", async () => {
+test("release page exposes only the current launch release", async () => {
   const manifest = JSON.parse(await readText("src/data/releases.json"));
   const releasesPage = await readText("src/app/releases/page.tsx");
+  const latest = manifest.releases[0];
 
   assert.ok(manifest.releases.length >= 1, "at least one release is listed");
-  assert.match(releasesPage, /visibleReleases/);
-  assert.match(releasesPage, /Archive pending/);
-  assert.equal(manifest.releases.slice(0, 5).length, Math.min(manifest.releases.length, 5));
-
-  for (const release of manifest.releases.slice(1, 5)) {
-    await access(projectFile(`public${release.archivePath}`));
-  }
+  assert.equal(latest.version, "1.4");
+  assert.match(releasesPage, /latestRelease\.latestPath/);
+  assert.match(releasesPage, /Current Scrub release/);
+  assert.doesNotMatch(releasesPage, /visibleReleases/);
+  assert.doesNotMatch(releasesPage, /Archive pending/);
+  assert.doesNotMatch(releasesPage, /Previous builds|previous builds|previous downloads/);
 });
 
 test("sitemap and LLM files expose all agent-facing routes", async () => {

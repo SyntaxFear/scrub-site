@@ -254,9 +254,6 @@ function LatestReleaseCard() {
           <Icon name="download" />
           Download latest
         </DownloadLink>
-        <Link className="text-link" href="/releases">
-          View previous versions
-        </Link>
       </div>
     </article>
   );

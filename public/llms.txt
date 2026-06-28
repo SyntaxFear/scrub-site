@@ -6,7 +6,7 @@
 
 - [Homepage](https://scrubmac.app/): Product overview, screenshots, privacy notes, requirements, FAQ, and download.
 - [Download DMG](https://scrubmac.app/Scrub.dmg): Current Scrub installer for macOS.
-- [Releases](https://scrubmac.app/releases): Latest Scrub version plus previous downloads when archived DMGs are available.
+- [Releases](https://scrubmac.app/releases): Current Scrub version and launch download details.
 - [Privacy](https://scrubmac.app/privacy): Privacy details for the site and native app.
 - [Terms](https://scrubmac.app/terms): Terms for downloading and using Scrub.
 - [Full LLM context](https://scrubmac.app/llms-full.txt): Extended product, privacy, safety, and support details.
