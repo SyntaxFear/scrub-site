@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
 
-const SCRUB_APP_CALLBACK = "com.levani.Scrub.auth:/apple/callback";
+const SCRUB_APP_CALLBACK = "com.levani.scrub.auth:/apple/callback";
 
 function scrubRedirect(params: URLSearchParams) {
   const target = new URL(SCRUB_APP_CALLBACK);

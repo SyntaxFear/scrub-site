@@ -119,7 +119,7 @@ test("crawler, social, legal, and LLM routes are present", async () => {
   assert.match(privacy, /twitter:/);
   assert.match(terms, /openGraph:/);
   assert.match(terms, /twitter:/);
-  assert.match(appleCallback, /com\.levani\.Scrub\.auth:\/apple\/callback/);
+  assert.match(appleCallback, /com\.levani\.scrub\.auth:\/apple\/callback/);
   assert.match(appleCallback, /code/);
   assert.match(appleCallback, /state/);
 });
