@@ -111,6 +111,13 @@ const features = [
   },
 ];
 
+const latestReleaseFacts = [
+  { label: "Released", value: formatReleaseDate(latestRelease.date) },
+  { label: "Build", value: latestRelease.build },
+  { label: "Requires", value: `macOS ${latestRelease.minimumMacOS}+` },
+  { label: "Size", value: formatBytes(latestRelease.fileSize) },
+];
+
 function Icon({ name }: { name: string }) {
   const common = {
     viewBox: "0 0 24 24",
@@ -202,6 +209,59 @@ function Icon({ name }: { name: string }) {
   }
 }
 
+function LatestReleaseCard() {
+  return (
+    <article className="release-card reveal-card">
+      <div className="release-summary">
+        <div className="release-title-row">
+          <Image className="release-icon" src="/assets/icon-180.png" alt="" width={62} height={62} />
+          <div>
+            <p className="eyebrow">Latest Version</p>
+            <h2 id="latest-release-title">Scrub {latestRelease.version}</h2>
+          </div>
+        </div>
+        <p className="release-meta">
+          Apple-notarized direct download, ready for macOS {latestRelease.minimumMacOS} or later.
+        </p>
+        <dl className="release-facts" aria-label={`Scrub ${latestRelease.version} release details`}>
+          {latestReleaseFacts.map((fact) => (
+            <div key={fact.label}>
+              <dt>{fact.label}</dt>
+              <dd>{fact.value}</dd>
+            </div>
+          ))}
+        </dl>
+      </div>
+
+      <div className="release-notes-panel">
+        <p className="release-notes-label">What&apos;s New</p>
+        <ul className="release-highlights" aria-label={`Scrub ${latestRelease.version} highlights`}>
+          {latestRelease.highlights.slice(0, 3).map((highlight) => (
+            <li key={highlight}>
+              <Icon name="check" />
+              <span>{highlight}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <div className="release-actions">
+        <div className="release-file">
+          <span>Scrub.dmg</span>
+          <small>{formatBytes(latestRelease.fileSize)} installer</small>
+        </div>
+        <DownloadLink className="download release-download" source="latest-card">
+          <Icon name="download" />
+          Download latest
+        </DownloadLink>
+        <Link className="text-link" href="/releases">
+          View previous versions
+        </Link>
+      </div>
+    </article>
+  );
+}
+
 export const dynamic = "error";
 
 export default function Home() {
@@ -278,32 +338,7 @@ export default function Home() {
 
           <section className="release-card-section reveal-section" aria-labelledby="latest-release-title">
             <div className="wrap">
-              <article className="release-card reveal-card">
-                <div>
-                  <p className="eyebrow">Latest Version</p>
-                  <h2 id="latest-release-title">Scrub {latestRelease.version}</h2>
-                  <p className="release-meta">
-                    Released {formatReleaseDate(latestRelease.date)} · {formatBytes(latestRelease.fileSize)}
-                  </p>
-                </div>
-                <ul className="release-highlights" aria-label={`Scrub ${latestRelease.version} highlights`}>
-                  {latestRelease.highlights.slice(0, 3).map((highlight) => (
-                    <li key={highlight}>
-                      <Icon name="check" />
-                      <span>{highlight}</span>
-                    </li>
-                  ))}
-                </ul>
-                <div className="release-actions">
-                  <DownloadLink className="download release-download" source="latest-card">
-                    <Icon name="download" />
-                    Download latest
-                  </DownloadLink>
-                  <Link className="text-link" href="/releases">
-                    View previous versions
-                  </Link>
-                </div>
-              </article>
+              <LatestReleaseCard />
             </div>
           </section>
 
