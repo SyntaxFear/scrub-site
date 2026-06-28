@@ -18,7 +18,7 @@
 - Platform: macOS 14 or later.
 - Price: Free.
 - Distribution: direct DMG download, Developer ID signed and Apple notarized.
-- Current version: 1.4.
+- Current version: 1.5.
 - Core feature: removes an app bundle plus related Application Support, caches, preferences, containers, launch agents, daemons, helpers, and login items.
 - Leftovers feature: finds files left behind by apps already deleted and skips Apple system files.
 - Safety: sends files to Trash first, supports review before removal, and avoids system-critical paths.
