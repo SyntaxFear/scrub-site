@@ -11,8 +11,8 @@ Scrub is a native macOS app for uninstalling Mac apps completely. Dragging an ap
 - Terms: https://scrubmac.app/terms
 - Platform: macOS 14 or later
 - Price: Free
-- Installer size currently shown on site: 2.6 MB
-- Current version: 1.1
+- Installer size currently shown on site: 4.1 MB
+- Current version: 1.2
 - Distribution: direct download, Developer ID signed and Apple notarized
 - App Store: not listed because the Mac App Store sandbox does not allow the deep disk access needed for this kind of cleanup
 

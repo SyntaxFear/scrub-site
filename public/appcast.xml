@@ -1,0 +1,14 @@
+<?xml version="1.0" standalone="yes"?>
+<rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>Scrub</title>
+        <item>
+            <title>1.2</title>
+            <pubDate>Sun, 28 Jun 2026 16:16:06 +0400</pubDate>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.2</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <enclosure url="https://scrubmac.app/releases/Scrub-1.2.dmg" length="4088211" type="application/octet-stream" sparkle:edSignature="2w+9Br1N0HjsgapJBVe93BKq9xRNiruPTcRfZXPijxD2Xwoi3cAwrJT4+cuuIwwOP6FXuU+zbxhcV3koEW3JAg=="/>
+        </item>
+    </channel>
+</rss>
