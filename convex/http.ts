@@ -14,7 +14,7 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 function json(data: unknown, status = 200): Response {
   return new Response(JSON.stringify(data), {
     status,
-    headers: { "Content-Type": "application/json" },
+    headers: { "Content-Type": "application/json", "Cache-Control": "no-store" },
   });
 }
 
@@ -40,6 +40,25 @@ async function readJson(req: Request): Promise<Record<string, unknown>> {
 }
 
 const http = httpRouter();
+
+// Private admin dashboard snapshot. The dashboard authenticates the human with
+// Google, then calls this server-to-server with a shared secret.
+http.route({
+  path: "/admin/snapshot",
+  method: "GET",
+  handler: httpAction(async (ctx, req) => {
+    const expected = process.env.SCRUB_ADMIN_API_KEY;
+    const actual = req.headers.get("authorization")?.replace(/^Bearer\s+/i, "");
+    if (!expected || actual !== expected) return json({ error: "Unauthorized" }, 401);
+
+    const snapshot = await ctx.runQuery(internal.admin.snapshot, {});
+    return json({
+      generatedAt: new Date().toISOString(),
+      deployment: "healthy-shepherd-34",
+      ...snapshot,
+    });
+  }),
+});
 
 // Sign in with Apple — verify the identity token, upsert user, issue session.
 http.route({

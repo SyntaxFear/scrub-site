@@ -1,7 +1,7 @@
 "use client";
 
 import { ReactNode } from "react";
-import posthog from "posthog-js";
+import { captureDownloadClicked } from "@/lib/posthogClient";
 
 // The DMG download link, instrumented for the key "download" metric via a PostHog
 // `download_clicked` event.
@@ -20,7 +20,7 @@ export function DownloadLink({
       href="/Scrub.dmg"
       download
       onClick={() => {
-        posthog.capture("download_clicked", { source });
+        void captureDownloadClicked(source);
       }}
     >
       {children}
