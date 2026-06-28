@@ -62,6 +62,13 @@ export default function PrivacyPage() {
         </section>
 
         <section>
+          <h2>AI assistant</h2>
+          <p>
+            If you connect ChatGPT/Codex and ask the assistant a question, Scrub can send cleanup metadata such as app names, bundle identifiers, paths, categories, sizes, and match confidence. File contents are never sent, and the assistant cannot delete anything.
+          </p>
+        </section>
+
+        <section>
           <h2>Contact</h2>
           <p>
             Questions about privacy can be sent to <a href="mailto:hello@scrubmac.app">hello@scrubmac.app</a>.

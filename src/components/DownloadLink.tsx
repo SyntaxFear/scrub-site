@@ -8,16 +8,18 @@ import { captureDownloadClicked } from "@/lib/posthogClient";
 export function DownloadLink({
   className,
   source,
+  href = "/Scrub.dmg",
   children,
 }: {
   className?: string;
   source: string;
+  href?: string;
   children: ReactNode;
 }) {
   return (
     <a
       className={className}
-      href="/Scrub.dmg"
+      href={href}
       download
       onClick={() => {
         void captureDownloadClicked(source);

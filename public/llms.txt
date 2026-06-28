@@ -6,6 +6,7 @@
 
 - [Homepage](https://scrubmac.app/): Product overview, screenshots, privacy notes, requirements, FAQ, and download.
 - [Download DMG](https://scrubmac.app/Scrub.dmg): Current Scrub installer for macOS.
+- [Releases](https://scrubmac.app/releases): Latest Scrub version plus previous downloads when archived DMGs are available.
 - [Privacy](https://scrubmac.app/privacy): Privacy details for the site and native app.
 - [Terms](https://scrubmac.app/terms): Terms for downloading and using Scrub.
 - [Full LLM context](https://scrubmac.app/llms-full.txt): Extended product, privacy, safety, and support details.
@@ -17,6 +18,7 @@
 - Platform: macOS 14 or later.
 - Price: Free.
 - Distribution: direct DMG download, Developer ID signed and Apple notarized.
+- Current version: 1.1.
 - Core feature: removes an app bundle plus related Application Support, caches, preferences, containers, launch agents, daemons, helpers, and login items.
 - Leftovers feature: finds files left behind by apps already deleted and skips Apple system files.
 - Safety: sends files to Trash first, supports review before removal, and avoids system-critical paths.

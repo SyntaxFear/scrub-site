@@ -12,7 +12,8 @@ test("download links stay crawlable while analytics initializes lazily", async (
   const downloadLink = await readText("src/components/DownloadLink.tsx");
   const posthogClient = await readText("src/lib/posthogClient.ts");
 
-  assert.match(downloadLink, /href="\/Scrub\.dmg"/);
+  assert.match(downloadLink, /href\s*=\s*"\/Scrub\.dmg"/);
+  assert.match(downloadLink, /href=\{href\}/);
   assert.match(downloadLink, /download/);
   assert.match(downloadLink, /captureDownloadClicked\(source\)/);
 

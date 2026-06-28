@@ -162,7 +162,7 @@ if (!chromeAvailable && process.env.SKIP_BROWSER_TESTS === "1") {
 
         assert.equal(metrics.hasMain, true, `${name} main landmark`);
         assert.match(metrics.h1, /^Uninstall apps\.\s*Leave no leftovers\.$/, `${name} h1`);
-        assert.equal(metrics.downloadLinks, 3, `${name} download anchors`);
+        assert.equal(metrics.downloadLinks, 4, `${name} download anchors`);
         assert.equal(metrics.overflow, false, `${name} horizontal overflow`);
         assert.equal(metrics.heroVisualVisible, true, `${name} hero product visual`);
         assert.deepEqual(consoleErrors, [], `${name} console errors`);

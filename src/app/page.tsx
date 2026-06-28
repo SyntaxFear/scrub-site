@@ -1,10 +1,12 @@
 import { DownloadLink } from "@/components/DownloadLink";
 import { LandingAnimations } from "@/components/LandingAnimations";
+import { formatBytes, formatReleaseDate, latestRelease } from "@/lib/releases";
 import Image from "next/image";
+import Link from "next/link";
 
 const SITE_URL = "https://scrubmac.app";
-const DOWNLOAD_URL = `${SITE_URL}/Scrub.dmg`;
-const DMG_SHA256 = "d961de42a75a44263763f7c66516d89fe43f244f1f268c6f539cd5925d2ec1f9";
+const DOWNLOAD_URL = `${SITE_URL}${latestRelease.latestPath}`;
+const DMG_SHA256 = latestRelease.sha256;
 
 const softwareJsonLd = {
   "@context": "https://schema.org",
@@ -23,8 +25,8 @@ const softwareJsonLd = {
     `${SITE_URL}/assets/screenshots/scrub-leftovers.png`,
     `${SITE_URL}/assets/screenshots/scrub-app-slack.png`,
   ],
-  softwareVersion: "1.0",
-  fileSize: "2.6 MB",
+  softwareVersion: latestRelease.version,
+  fileSize: formatBytes(latestRelease.fileSize),
   description:
     "Scrub is a native macOS app uninstaller that removes apps and the related caches, containers, preferences, launch agents, helpers, and leftovers they leave behind.",
   featureList: [
@@ -229,6 +231,7 @@ export default function Home() {
             </a>
             <div className="nav-actions">
               <a href="#faq">FAQ</a>
+              <Link href="/releases">Releases</Link>
               <DownloadLink className="nav-cta" source="nav">
                 Download
               </DownloadLink>
@@ -255,7 +258,9 @@ export default function Home() {
                   Download
                 </DownloadLink>
               </div>
-              <p className="meta reveal-hero">Free · macOS 14+ · Apple-notarized</p>
+              <p className="meta reveal-hero">
+                Free · v{latestRelease.version} · macOS {latestRelease.minimumMacOS}+ · Apple-notarized
+              </p>
 
               <figure className="hero-window reveal-hero" aria-label="Scrub app screenshot">
                 <Image
@@ -270,6 +275,37 @@ export default function Home() {
               </figure>
             </div>
           </header>
+
+          <section className="release-card-section reveal-section" aria-labelledby="latest-release-title">
+            <div className="wrap">
+              <article className="release-card reveal-card">
+                <div>
+                  <p className="eyebrow">Latest Version</p>
+                  <h2 id="latest-release-title">Scrub {latestRelease.version}</h2>
+                  <p className="release-meta">
+                    Released {formatReleaseDate(latestRelease.date)} · {formatBytes(latestRelease.fileSize)}
+                  </p>
+                </div>
+                <ul className="release-highlights" aria-label={`Scrub ${latestRelease.version} highlights`}>
+                  {latestRelease.highlights.slice(0, 3).map((highlight) => (
+                    <li key={highlight}>
+                      <Icon name="check" />
+                      <span>{highlight}</span>
+                    </li>
+                  ))}
+                </ul>
+                <div className="release-actions">
+                  <DownloadLink className="download release-download" source="latest-card">
+                    <Icon name="download" />
+                    Download latest
+                  </DownloadLink>
+                  <Link className="text-link" href="/releases">
+                    View previous versions
+                  </Link>
+                </div>
+              </article>
+            </div>
+          </section>
 
           <section className="showcase reveal-section" aria-labelledby="showcase-title">
             <div className="wrap product-wrap">
