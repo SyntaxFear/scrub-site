@@ -101,6 +101,7 @@ test("crawler, social, legal, and LLM routes are present", async () => {
       "src/app/privacy/page.tsx",
       "src/app/terms/page.tsx",
       "src/app/releases/page.tsx",
+      "src/app/api/auth/callback/apple/route.ts",
       "src/proxy.ts",
       "src/data/releases.json",
       "public/llms.txt",
@@ -113,10 +114,14 @@ test("crawler, social, legal, and LLM routes are present", async () => {
 
   const privacy = await readText("src/app/privacy/page.tsx");
   const terms = await readText("src/app/terms/page.tsx");
+  const appleCallback = await readText("src/app/api/auth/callback/apple/route.ts");
   assert.match(privacy, /openGraph:/);
   assert.match(privacy, /twitter:/);
   assert.match(terms, /openGraph:/);
   assert.match(terms, /twitter:/);
+  assert.match(appleCallback, /com\.levani\.Scrub\.auth:\/apple\/callback/);
+  assert.match(appleCallback, /code/);
+  assert.match(appleCallback, /state/);
 });
 
 test("release page exposes only the current launch release", async () => {

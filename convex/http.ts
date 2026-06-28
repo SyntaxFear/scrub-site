@@ -1,11 +1,12 @@
 import { httpRouter } from "convex/server";
-import { httpAction } from "./_generated/server";
+import { ActionCtx, httpAction } from "./_generated/server";
 import { internal } from "./_generated/api";
-import { createRemoteJWKSet, jwtVerify } from "jose";
+import { createRemoteJWKSet, jwtVerify, type JWTPayload } from "jose";
 import { authCodeEmail } from "./emailTemplates";
 
-// Native macOS app's bundle identifier — the audience of an Apple identity token.
+// Native macOS app's bundle identifier — the audience of a native Apple identity token.
 const APPLE_BUNDLE_ID = "com.levani.Scrub";
+const APPLE_WEB_REDIRECT_URI = "https://scrubmac.app/api/auth/callback/apple";
 const APPLE_JWKS = createRemoteJWKSet(new URL("https://appleid.apple.com/auth/keys"));
 const GOOGLE_JWKS = createRemoteJWKSet(new URL("https://www.googleapis.com/oauth2/v3/certs"));
 
@@ -37,6 +38,28 @@ async function readJson(req: Request): Promise<Record<string, unknown>> {
   } catch {
     return {};
   }
+}
+
+async function signInWithApplePayload(
+  ctx: ActionCtx,
+  payload: JWTPayload,
+  name: unknown,
+) {
+  const sub = payload.sub;
+  if (typeof sub !== "string" || !sub) return json({ error: "Invalid Apple token" }, 401);
+  const appleVerified = payload.email_verified;
+  const appleEmailOk = appleVerified === true || appleVerified === "true";
+  if (payload.email && !appleEmailOk) {
+    return json({ error: "Apple email is not verified" }, 401);
+  }
+
+  const email = (payload.email as string | undefined) ?? `${sub}@appleid.scrubmac.app`;
+  const result = await ctx.runMutation(internal.nativeAuth.signIn, {
+    email,
+    name: typeof name === "string" ? name.slice(0, 100) : undefined,
+    appleSub: sub,
+  });
+  return json(result);
 }
 
 const http = httpRouter();
@@ -72,24 +95,52 @@ http.route({
         issuer: "https://appleid.apple.com",
         audience: APPLE_BUNDLE_ID,
       });
-      const sub = payload.sub as string;
-      // When Apple returns an email it must be verified (Apple sends the claim as
-      // boolean true or the string "true"); reject if it's present but unverified
-      // or, defensively, if the claim is missing while an email is set.
-      const appleVerified = payload.email_verified;
-      const appleEmailOk = appleVerified === true || appleVerified === "true";
-      if (payload.email && !appleEmailOk) {
-        return json({ error: "Apple email is not verified" }, 401);
-      }
-      // Apple only returns the email on the first authorization; fall back to a
-      // stable per-user placeholder keyed by the (verified) subject.
-      const email = (payload.email as string | undefined) ?? `${sub}@appleid.scrubmac.app`;
-      const result = await ctx.runMutation(internal.nativeAuth.signIn, {
-        email,
-        name: typeof name === "string" ? name.slice(0, 100) : undefined,
-        appleSub: sub,
+      return await signInWithApplePayload(ctx, payload, name);
+    } catch {
+      return json({ error: "Invalid Apple token" }, 401);
+    }
+  }),
+});
+
+// Sign in with Apple for the direct-download macOS app. The app receives an
+// authorization code through the scrubmac.app callback bridge, then this endpoint
+// exchanges it server-side using the Apple Services ID client secret.
+http.route({
+  path: "/native/auth/apple-code",
+  method: "POST",
+  handler: httpAction(async (ctx, req) => {
+    const clientId = process.env.AUTH_APPLE_ID;
+    const clientSecret = process.env.AUTH_APPLE_SECRET;
+    if (!clientId || !clientSecret) return json({ error: "Apple sign-in is not configured yet" }, 503);
+
+    const { code, name } = await readJson(req);
+    if (typeof code !== "string" || !code) return json({ error: "Missing code" }, 400);
+
+    const body = new URLSearchParams({
+      client_id: clientId,
+      client_secret: clientSecret,
+      code,
+      grant_type: "authorization_code",
+      redirect_uri: APPLE_WEB_REDIRECT_URI,
+    });
+
+    const tokenResponse = await fetch("https://appleid.apple.com/auth/token", {
+      method: "POST",
+      headers: { "Content-Type": "application/x-www-form-urlencoded" },
+      body,
+    });
+    const tokenJson = (await tokenResponse.json().catch(() => ({}))) as Record<string, unknown>;
+    const idToken = tokenJson.id_token;
+    if (!tokenResponse.ok || typeof idToken !== "string") {
+      return json({ error: "Invalid Apple authorization code" }, 401);
+    }
+
+    try {
+      const { payload } = await jwtVerify(idToken, APPLE_JWKS, {
+        issuer: "https://appleid.apple.com",
+        audience: clientId,
       });
-      return json(result);
+      return await signInWithApplePayload(ctx, payload, name);
     } catch {
       return json({ error: "Invalid Apple token" }, 401);
     }
