@@ -49,7 +49,11 @@ export default function ReleasesPage() {
                   {latestRelease.minimumMacOS}+ · {formatBytes(latestRelease.fileSize)}
                 </p>
               </div>
-              <DownloadLink className="nav-cta" source="releases-latest" href={latestRelease.latestPath}>
+              <DownloadLink
+                className="nav-cta release-page-download"
+                source="releases-latest"
+                href={latestRelease.latestPath}
+              >
                 Download latest
               </DownloadLink>
             </div>

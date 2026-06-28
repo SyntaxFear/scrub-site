@@ -128,6 +128,7 @@ test("release page exposes only the current launch release", async () => {
   assert.equal(latest.version, "1.4");
   assert.match(releasesPage, /latestRelease\.latestPath/);
   assert.match(releasesPage, /Current Scrub release/);
+  assert.match(releasesPage, /release-page-download/);
   assert.doesNotMatch(releasesPage, /visibleReleases/);
   assert.doesNotMatch(releasesPage, /Archive pending/);
   assert.doesNotMatch(releasesPage, /Previous builds|previous builds|previous downloads/);
