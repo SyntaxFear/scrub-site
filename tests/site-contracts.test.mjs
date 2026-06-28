@@ -79,7 +79,7 @@ test("download metadata matches the shipped DMG", async () => {
   const sha = createHash("sha256").update(dmg).digest("hex");
 
   assert.equal(latest.sha256, sha);
-  assert.equal(latest.version, "1.2");
+  assert.equal(latest.version, "1.3");
   assert.equal(latest.fileSize, dmg.byteLength);
   assert.match(page, /softwareVersion:\s*latestRelease\.version/);
   assert.match(page, /fileSize:\s*formatBytes\(latestRelease\.fileSize\)/);
