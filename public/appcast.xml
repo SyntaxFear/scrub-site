@@ -3,12 +3,12 @@
     <channel>
         <title>Scrub</title>
         <item>
-            <title>1.5</title>
-            <pubDate>Sun, 28 Jun 2026 19:12:26 +0400</pubDate>
-            <sparkle:version>6</sparkle:version>
-            <sparkle:shortVersionString>1.5</sparkle:shortVersionString>
+            <title>1.6</title>
+            <pubDate>Sun, 28 Jun 2026 19:58:24 +0400</pubDate>
+            <sparkle:version>7</sparkle:version>
+            <sparkle:shortVersionString>1.6</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <enclosure url="https://scrubmac.app/releases/Scrub-1.5.dmg" length="3594466" type="application/octet-stream" sparkle:edSignature="C+KAeDf3awWl/NG+yIdrTfTtCOrLOnWDBF3X9w5q6XAH9TOTolH4t5kRvyIIxoY38t65FPcYXzN2k1saOTPuAw=="/>
+            <enclosure url="https://scrubmac.app/releases/Scrub-1.6.dmg" length="3593421" type="application/octet-stream" sparkle:edSignature="iD/0w+8Clckad/GSG8ECKy37hjOyj6ssgbppAh0DjvyrdPoxAgoDtwCx1Jfn8FFdqKwDVStjv2JghnjKluEAAQ=="/>
         </item>
     </channel>
 </rss>

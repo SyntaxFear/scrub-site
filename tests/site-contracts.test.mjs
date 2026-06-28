@@ -79,7 +79,7 @@ test("download metadata matches the shipped DMG", async () => {
   const sha = createHash("sha256").update(dmg).digest("hex");
 
   assert.equal(latest.sha256, sha);
-  assert.equal(latest.version, "1.5");
+  assert.equal(latest.version, "1.6");
   assert.equal(latest.fileSize, dmg.byteLength);
   assert.match(page, /softwareVersion:\s*latestRelease\.version/);
   assert.match(page, /fileSize:\s*formatBytes\(latestRelease\.fileSize\)/);
@@ -130,7 +130,7 @@ test("release page exposes only the current launch release", async () => {
   const latest = manifest.releases[0];
 
   assert.ok(manifest.releases.length >= 1, "at least one release is listed");
-  assert.equal(latest.version, "1.5");
+  assert.equal(latest.version, "1.6");
   assert.match(releasesPage, /latestRelease\.latestPath/);
   assert.match(releasesPage, /Current Scrub release/);
   assert.match(releasesPage, /release-page-download/);
